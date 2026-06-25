@@ -1,37 +1,43 @@
-# Koding_disertasi
-Ini adalah Koding Disertasi yang masih belum oke, namun sudah bisa mendapatkan data yang akurat menggunakan dataset keagle
-#python kodeFL_disertasi.py  | tee output.log
-============================================================
- FEDERATED LEARNING DENGAN DYNAMIC TRUST SCORE AGGREGATION
- Implementasi sesuai Disertasi Bab III — Rikie Kartadie
- NIM: 25052050012 | UNY 2025
+# Implementasi Federated Learning dengan Dynamic Trust Score (DTS) Aggregation
 
- Algoritma  : DTS (Dynamic Trust Score)
- 
- Versi      : mbuh
- ============================================================
+**Disertasi Bab III – Deteksi Serangan DDoS pada Multi-Controller SDN**  
+**Penulis:** Rikie Kartadie  
+**NIM:** 25052050012 | **Universitas Negeri Yogyakarta (UNY) – 2025**
 
-# FORMULA YANG DIIMPLEMENTASIKAN (dari Bab III):
- Persamaan (3.1) — Agregasi Global:
-   w^{t+1} = Σ α_k^t · w_k^t
-   α_k^t = (T_k^t · n_k) / Σ(T_i^t · n_i)
+Repositori ini berisi implementasi kode dari **Algoritma 1 (Dynamic Trust Score)** sesuai dengan Persamaan (3.1) hingga (3.6) pada disertasi. Algoritma ini dirancang untuk mengagregasi model Federated Learning secara dinamis berdasarkan kepercayaan (Trust Score) masing-masing controller SDN.
 
- Persamaan (3.2) — Dynamic Trust Score:
-   T_k^t = β1·Acc̃_k^t + β2·ΔL̃_k^t + β3·(1 − L̃_k^t)
-   β1=0.4, β2=0.4, β3=0.2  (β1+β2+β3=1)
+---
 
- Persamaan (3.3) — Normalisasi Akurasi:
-   Acc̃_k^t = (Acc_k^t - min_i Acc_i^t) / (max_i Acc_i^t - min_i Acc_i^t + ε)
+## 📋 Deskripsi Singkat
 
- Persamaan (3.4) — Normalisasi Penurunan Loss:
-   ΔL̃_k^t = (ΔL_k^t - min_i ΔL_i^t) / (max_i ΔL_i^t - min_i ΔL_i^t + ε)
-   ΔL_k^t = L_k^{t-1} - L_k^t
+Kode ini melakukan simulasi Federated Learning dengan **5 controller SDN** (klien) yang mendistribusikan data serangan DDoS secara **Non-IID** menggunakan distribusi Dirichlet. 
+Metode yang diusulkan (DTS) membandingkan bobot agregasi berdasarkan kombinasi:
+- **Akurasi lokal** (`Acc̃`)
+- **Penurunan Loss** (`ΔL̃`)
+- **Loss sesaat** (`L̃`)
 
- Persamaan (3.5) — Normalisasi Loss:
-   L̃_k^t = (L_k^t - min_i L_i^t) / (max_i L_i^t - min_i L_i^t + ε)
- 
- Persamaan (3.6) -- Kriteria Konvergensi
-  |L^t_global - L^{t-1}_global| < δ selama τ round berturut-turut
-   δ = 1e-4, τ = 5, T_max = 200
- ============================================================
+Sebagai pembanding, kode ini juga menyertakan baseline **FedAvg (McMahan et al., 2017)** dan **Centralized Training**.
 
+---
+
+## 💻 Spesifikasi Perangkat Keras yang Digunakan
+
+Kode ini telah diuji dan berjalan dengan baik pada spek berikut (tanpa GPU):
+
+| Komponen | Spesifikasi |
+| :--- | :--- |
+| **Perangkat** | Lenovo ThinkPad T580 |
+| **Prosesor (CPU)** | Intel Core i7 (8 Core) |
+| **Memori (RAM)** | 16 GB |
+| **Akselerasi** | **Tidak memerlukan GPU / CUDA** (hanya mengandalkan CPU) |
+
+> ⚠️ **Catatan:** Karena tidak menggunakan GPU, pelatihan 200 round (T_max sesuai dengan lieratur Karimireddy et al. (2019)) dengan 5 klien mungkin memakan waktu **cukup lama (30–60 menit)** tergantung ukuran dataset. Pastikan laptop terhubung ke listrik.
+
+---
+
+## 📦 Persyaratan Sistem (Dependensi)
+
+Pastikan Python versi **3.8 – 3.11** telah terinstal. Instal semua dependensi yang diperlukan:
+
+```bash
+pip install tensorflow kagglehub pandas numpy matplotlib seaborn scikit-learn
