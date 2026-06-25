@@ -108,3 +108,5 @@ Confusion Matrix DTS dan FedAvg
 Distribusi Non-IID antar controller
 Korelasi Trust Score vs Akurasi per controller
 
+## Dataset
+https://www.kaggle.com/datasets/aikenkazin/ddos-sdn-dataset
