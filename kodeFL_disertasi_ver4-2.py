@@ -4,8 +4,8 @@
 # Implementasi sesuai Disertasi Bab III — Rikie Kartadie
 # NIM: 25052050012 | UNY 2025
 #
-# Algoritma  : DTS-FA (Dynamic Trust Score Federated Aggregation)
-# Target     : Jurnal Scopus Q2
+# Algoritma  : DTS (Dynamic Trust Score)
+# 
 # Versi      : 4.2 — Memory Optimized (RAM-efficient for 16GB laptop)
 #
 # == OPTIMASI MEMORI YANG DITERAPKAN ==
@@ -45,7 +45,7 @@
 #   |L^t_global - L^{t-1}_global| < δ selama τ round berturut-turut
 #   δ = 1e-4, τ = 5, T_max = 200
 #
-# Algoritma 1 — DTS-FA (Langkah 1–35 dari disertasi)
+# Algoritma 1 — DTS (Langkah 1–35 dari disertasi)
 # ============================================================
 
 # ── CELL 1: Install ──────────────────────────────────────────
@@ -131,7 +131,7 @@ PREDICT_BATCH   = 1024
 VAL_EVERY       = 10   # validasi tiap N round (asli: 5)
 
 print("\n" + "="*65)
-print("DTS-FA: DYNAMIC TRUST SCORE FEDERATED AGGREGATION")
+print("DTS: DYNAMIC TRUST SCORE FEDERATED AGGREGATION")
 print("Implementasi sesuai Disertasi Bab III — Rikie Kartadie")
 print("[VERSI OPTIMASI MEMORI — RAM-friendly untuk 16GB laptop]")
 print("="*65)
@@ -335,7 +335,7 @@ def local_train_reuse(client_model, global_weights, X_train, y_train):
     return get_weights(client_model), len(X_train), float(loss), float(acc)
 
 # ===========================================================
-# IMPLEMENTASI DTS-FA — SESUAI ALGORITMA 1 BAB III
+# IMPLEMENTASI DTS — SESUAI ALGORITMA 1 BAB III
 # ===========================================================
 
 def minmax_normalize(values, eps=EPSILON):
@@ -368,7 +368,7 @@ def compute_dts(acc_list, loss_list, prev_loss_list,
 
 def dts_aggregate(client_weights_list, client_sizes, trust_scores):
     """
-    Agregasi DTS-FA — Persamaan (3.1).
+    Agregasi DTS — Persamaan (3.1).
     α_k^t = (T_k^t · n_k) / Σ(T_i^t · n_i)
     w^{t+1} = Σ α_k^t · w_k^t
     """
@@ -397,10 +397,10 @@ def dts_aggregate(client_weights_list, client_sizes, trust_scores):
     return aggregated, alpha
 
 # ===========================================================
-# STEP 5: DTS-FA TRAINING LOOP — ALGORITMA 1 BAB III
+# STEP 5: DTS TRAINING LOOP — ALGORITMA 1 BAB III
 # ===========================================================
 print("\n" + "="*65)
-print("STEP 5: DTS-FA TRAINING LOOP")
+print("STEP 5: DTS TRAINING LOOP")
 print(f"  T_max={T_MAX} | Local Epochs={LOCAL_EPOCHS} | δ={DELTA} | τ={TAU}")
 print(f"  [OPT] Validasi tiap {VAL_EVERY} round | Clear session tiap {CLEAR_EVERY} round")
 print("="*65)
@@ -557,7 +557,7 @@ print(f"Best val accuracy: {best_val_acc:.4f}")
 # Muat bobot terbaik
 set_weights(global_model, best_weights)
 
-# Bebaskan client models setelah training DTS-FA selesai
+# Bebaskan client models setelah training DTS selesai
 del client_models
 gc.collect()
 
@@ -599,9 +599,9 @@ def evaluate_model(model, X, y_true, model_name):
                 f1=f1, auc=auc, fpr=fpr,
                 y_pred=y_pred, y_prob=y_prob)
 
-# Evaluasi DTS-FA
+# Evaluasi DTS
 dtsa_res = evaluate_model(global_model, X_test_sc, y_test,
-                          "DTS-FA (Dynamic Trust Score — Disertasi Bab III)")
+                          "DTS (Dynamic Trust Score — Disertasi Bab III)")
 
 # ── Baseline FedAvg ─────────────────────────────────────────
 print("\nTraining Baseline FedAvg...")
@@ -725,13 +725,13 @@ print("STEP 7: PERBANDINGAN HASIL")
 print("="*65)
 print(f"\n  {'Model':<28} {'Acc':>7} {'Prec':>7} {'Rec':>7} {'F1':>7} {'AUC':>7} {'FPR':>7}")
 print("  " + "-"*68)
-for name, res in [("DTS-FA (Disertasi)", dtsa_res),
+for name, res in [("DTS (Disertasi)", dtsa_res),
                   ("FedAvg (Baseline)", fedavg_res),
                   ("Centralized (Baseline)", cent_res)]:
     print(f"  {name:<28} {res['accuracy']:>7.4f} {res['precision']:>7.4f} "
           f"{res['recall']:>7.4f} {res['f1']:>7.4f} {res['auc']:>7.4f} {res['fpr']:>7.4f}")
 
-print(f"\n  Peningkatan DTS-FA vs FedAvg:")
+print(f"\n  Peningkatan DTS vs FedAvg:")
 for k in ['accuracy','precision','recall','f1','auc']:
     gap = dtsa_res[k] - fedavg_res[k]
     print(f"    {k:<12}: {gap:+.4f}")
@@ -740,10 +740,10 @@ for k in ['accuracy','precision','recall','f1','auc']:
 # STEP 8: EVALUASI PER CONTROLLER
 # ===========================================================
 print("\n" + "="*65)
-print("STEP 8: EVALUASI PER CONTROLLER — DTS-FA")
+print("STEP 8: EVALUASI PER CONTROLLER — DTS")
 print("="*65)
 
-# Restore global_model dengan best_weights DTS-FA
+# Restore global_model dengan best_weights DTS
 set_weights(global_model, best_weights)
 
 per_ctrl = {}
@@ -789,7 +789,7 @@ colors = ['#2980b9','#e74c3c','#27ae60','#8e44ad','#e67e22',
 # ── Plot 1: Konvergensi Loss Global ──────────────────────────
 ax1 = fig.add_subplot(gs[0,0])
 ax1.plot(history['round'], history['global_loss'],
-         color='#e74c3c', lw=2, label='L_global (DTS-FA)')
+         color='#e74c3c', lw=2, label='L_global (DTS)')
 ax1.axhline(y=DELTA, color='gray', ls=':', lw=1, label=f'δ={DELTA}')
 ax1.set_xlabel('Round'); ax1.set_ylabel('Global Loss')
 ax1.set_title('Konvergensi Loss Global (Pers. 3.6)')
@@ -798,11 +798,11 @@ ax1.legend(fontsize=8)
 # ── Plot 2: Val Accuracy ─────────────────────────────────────
 ax2 = fig.add_subplot(gs[0,1])
 ax2.plot(history['round'], history['val_acc'],
-         color='#2980b9', lw=2, label='DTS-FA Val Acc')
+         color='#2980b9', lw=2, label='DTS Val Acc')
 ax2.plot(history['round'], history['train_acc'],
-         color='#2980b9', lw=1.5, ls='--', alpha=0.6, label='DTS-FA Train Acc')
+         color='#2980b9', lw=1.5, ls='--', alpha=0.6, label='DTS Train Acc')
 ax2.set_xlabel('Round'); ax2.set_ylabel('Accuracy')
-ax2.set_title('DTS-FA — Training & Validation Accuracy')
+ax2.set_title('DTS — Training & Validation Accuracy')
 ax2.legend(fontsize=8)
 
 # ── Plot 3: Dynamic Trust Score per controller ───────────────
@@ -830,27 +830,27 @@ ax5 = fig.add_subplot(gs[1,1])
 mk   = ['accuracy','precision','recall','f1','auc']
 xpos = np.arange(len(mk)); w = 0.25
 b1   = ax5.bar(xpos-w,   [dtsa_res[k]   for k in mk], w,
-               color='#2980b9', label='DTS-FA', alpha=0.85)
+               color='#2980b9', label='DTS', alpha=0.85)
 b2   = ax5.bar(xpos,     [fedavg_res[k] for k in mk], w,
                color='#e67e22', label='FedAvg',  alpha=0.85)
 b3   = ax5.bar(xpos+w,   [cent_res[k]   for k in mk], w,
                color='#27ae60', label='Centralized', alpha=0.85)
 ax5.set_xticks(xpos); ax5.set_xticklabels(['Acc','Prec','Rec','F1','AUC'])
-ax5.set_ylim([0,1.15]); ax5.set_title('DTS-FA vs FedAvg vs Centralized')
+ax5.set_ylim([0,1.15]); ax5.set_title('DTS vs FedAvg vs Centralized')
 ax5.legend(fontsize=8)
 for bar in list(b1)+list(b2)+list(b3):
     h = bar.get_height()
     ax5.text(bar.get_x()+bar.get_width()/2, h+0.005,
              f'{h:.3f}', ha='center', va='bottom', fontsize=6.5)
 
-# ── Plot 6: Confusion Matrix DTS-FA ──────────────────────────
+# ── Plot 6: Confusion Matrix DTS ──────────────────────────
 ax6 = fig.add_subplot(gs[1,2])
 cm1 = confusion_matrix(y_test, dtsa_res['y_pred'])
 sns.heatmap(cm1, annot=True, fmt='d', cmap='Blues', ax=ax6,
             xticklabels=['Normal','Attack'],
             yticklabels=['Normal','Attack'], cbar=False)
 ax6.set_xlabel('Predicted'); ax6.set_ylabel('Actual')
-ax6.set_title('Confusion Matrix — DTS-FA')
+ax6.set_title('Confusion Matrix — DTS')
 
 # ── Plot 7: Distribusi Non-IID ───────────────────────────────
 ax7 = fig.add_subplot(gs[2,0])
@@ -915,14 +915,14 @@ Federated Learning dengan Dynamic Trust Score Aggregation
   Features   : {n_features}  |  Classes: Binary (Normal / Attack)
   Train/Test : {len(X_tv_sc):,} / {len(X_test_sc):,} (stratified held-out)
   Controller : {N_CLIENTS} SDN  |  Non-IID Dirichlet α={DIRICHLET_ALPHA}
-  Algorithm  : DTS-FA (Persamaan 3.1–3.6, Algoritma 1 Bab III)
+  Algorithm  : DTS (Persamaan 3.1–3.6, Algoritma 1 Bab III)
   β1={BETA_1}, β2={BETA_2}, β3={BETA_3}  |  δ={DELTA}, τ={TAU}
   Rounds     : {actual_rounds}/{T_MAX}  ({stopped_by})
 
   ┌───────────────────────┬───────┬───────┬───────┬───────┬───────┬───────┐
   │ Model                 │  Acc  │  Prec │  Rec  │  F1   │  AUC  │  FPR  │
   ├───────────────────────┼───────┼───────┼───────┼───────┼───────┼───────┤
-  │ DTS-FA (Disertasi)    │{dtsa_res['accuracy']:>6.4f}│{dtsa_res['precision']:>6.4f}│{dtsa_res['recall']:>6.4f}│{dtsa_res['f1']:>6.4f}│{dtsa_res['auc']:>6.4f}│{dtsa_res['fpr']:>6.4f}│
+  │ DTS (Disertasi)    │{dtsa_res['accuracy']:>6.4f}│{dtsa_res['precision']:>6.4f}│{dtsa_res['recall']:>6.4f}│{dtsa_res['f1']:>6.4f}│{dtsa_res['auc']:>6.4f}│{dtsa_res['fpr']:>6.4f}│
   │ FedAvg (Baseline)     │{fedavg_res['accuracy']:>6.4f}│{fedavg_res['precision']:>6.4f}│{fedavg_res['recall']:>6.4f}│{fedavg_res['f1']:>6.4f}│{fedavg_res['auc']:>6.4f}│{fedavg_res['fpr']:>6.4f}│
   │ Centralized (Baseline)│{cent_res['accuracy']:>6.4f}│{cent_res['precision']:>6.4f}│{cent_res['recall']:>6.4f}│{cent_res['f1']:>6.4f}│{cent_res['auc']:>6.4f}│{cent_res['fpr']:>6.4f}│
   └───────────────────────┴───────┴───────┴───────┴───────┴───────┴───────┘
