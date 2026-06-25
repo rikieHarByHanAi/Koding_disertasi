@@ -40,4 +40,5 @@ Kode ini telah diuji dan berjalan dengan baik pada spek berikut (tanpa GPU):
 Pastikan Python versi **3.8 – 3.11** telah terinstal. Instal semua dependensi yang diperlukan:
 
 ```bash
-pip install tensorflow kagglehub pandas numpy matplotlib seaborn scikit-learn
+pip install tensorflow kagglehub pandas numpy matplotlib seaborn scikit-learn -q
+
