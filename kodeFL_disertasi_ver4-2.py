@@ -131,7 +131,7 @@ PREDICT_BATCH   = 1024
 VAL_EVERY       = 10   # validasi tiap N round (asli: 5)
 
 print("\n" + "="*65)
-print("DTS: DYNAMIC TRUST SCORE FEDERATED AGGREGATION")
+print("DTS: DYNAMIC TRUST SCORE")
 print("Implementasi sesuai Disertasi Bab III — Rikie Kartadie")
 print("[VERSI OPTIMASI MEMORI — RAM-friendly untuk 16GB laptop]")
 print("="*65)
@@ -895,7 +895,7 @@ ax9.set_title('Confusion Matrix — FedAvg')
 plt.suptitle(
     'Federated Learning dengan Dynamic Trust Score Aggregation\n'
     'untuk Deteksi Serangan DDoS pada Multi-Controller SDN\n'
-    'Rikie Kartadie — UNY 2025  |  Jurnal JINITA SINTA 2',
+    'Rikie Kartadie — UNY 2025 ',
     fontsize=12, fontweight='bold', y=1.01
 )
 plt.savefig('dtsa_results.pdf', bbox_inches='tight', dpi=300)
