@@ -908,8 +908,8 @@ print("Tersimpan: dtsa_results.pdf + dtsa_results.png")
 # ===========================================================
 print(f"""
 {'='*65}
-RINGKASAN HASIL — DISERTASI & JURNAL SCOPUS Q2
-Federated Learning dengan Dynamic Trust Score Aggregation
+RINGKASAN HASIL — DISERTASI 
+Federated Learning dengan Dynamic Trust Score 
 {'='*65}
   Dataset    : DDoS SDN (aikenkazin/ddos-sdn-dataset)
   Features   : {n_features}  |  Classes: Binary (Normal / Attack)
