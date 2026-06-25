@@ -863,7 +863,7 @@ ax4.set_xticks(x4); ax4.set_xticklabels(cnames)
 ax4.set_ylim([0, 1]); ax4b.set_ylim([0, 100])
 ax4.set_ylabel('Score')
 ax4b.set_ylabel('Attack Ratio (%)', color='red')
-ax4.set_title('Dampak Non-IID per Controller')
+ax4.set_title('Non-IID Impact per Controller')
 la, na = ax4.get_legend_handles_labels()
 lb, nb = ax4b.get_legend_handles_labels()
 ax4.legend(la+lb, na+nb, fontsize=8)
@@ -879,7 +879,7 @@ ax5.bar(x5, n_norm, color=C['norm'], label='Normal', alpha=0.8)
 ax5.bar(x5, n_atk,  color=C['atk'], label='Attack',
         bottom=n_norm, alpha=0.8)
 ax5.set_xticks(x5); ax5.set_xticklabels(cnames)
-ax5.set_ylabel('Jumlah Sampel (Val Set)')
+ax5.set_ylabel('Number of Samples (Val Set)')
 ax5.set_title(f'Distribusi Non-IID (α={DIRICHLET_ALPHA})')
 ax5.legend(fontsize=9)
 
@@ -897,7 +897,7 @@ es_info = (f"Early Stop @ Round {final_round} (best @ round {best_round})"
 
 plt.suptitle(
     'Analisis Non-IID pada Multiple Controller SDN untuk Deteksi DDoS\n'
-    f'Federated Learning (FedAvg) — {es_info}  |  Jurnal JINITA SINTA 2',
+    f'Federated Learning (FedAvg) — {es_info}',
     fontsize=12, fontweight='bold', y=1.01
 )
 
