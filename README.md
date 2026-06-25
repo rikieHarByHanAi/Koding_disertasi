@@ -1,6 +1,6 @@
 # Koding_disertasi
 Ini adalah Koding Disertasi yang masih belum oke, namun sudah bisa mendapatkan data yang akurat menggunakan dataset keagle
-#python kodeFL_disertasi.py 2>&1 | tee output.log
+#python kodeFL_disertasi.py  | tee output.log
 ============================================================
  FEDERATED LEARNING DENGAN DYNAMIC TRUST SCORE AGGREGATION
  Implementasi sesuai Disertasi Bab III — Rikie Kartadie
@@ -29,9 +29,9 @@ Ini adalah Koding Disertasi yang masih belum oke, namun sudah bisa mendapatkan d
 
  Persamaan (3.5) — Normalisasi Loss:
    L̃_k^t = (L_k^t - min_i L_i^t) / (max_i L_i^t - min_i L_i^t + ε)
-
- Persamaan (3.6) — Kriteria Konvergensi:
-   |L^t_global - L^{t-1}_global| < δ selama τ round berturut-turut
+ 
+ Persamaan (3.6) -- Kriteria Konvergensi
+  |L^t_global - L^{t-1}_global| < δ selama τ round berturut-turut
    δ = 1e-4, τ = 5, T_max = 200
  ============================================================
 
